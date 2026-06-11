@@ -1,0 +1,135 @@
+// tests/postman/Capacity Planning API.postman_collection.json
+{
+  "info": {
+    "name": "Capacity Planning API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get All Projects",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/projects",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "projects"]
+        }
+      }
+    },
+    {
+      "name": "Get Projects with Filters",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/projects?status=in%20test&assignee=Alice",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "projects"],
+          "query": [
+            {"key": "status", "value": "in test"},
+            {"key": "assignee", "value": "Alice"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create New Project",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test Project\",\n  \"status\": \"backlog\",\n  \"assignee\": \"John Doe\",\n  \"startDate\": \"2025-01-01\",\n  \"endDate\": \"2025-02-01\",\n  \"testEstimateDays\": 10,\n  \"qaResourceCount\": 2,\n  \"description\": \"API test project\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/projects",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "projects"]
+        }
+      }
+    },
+    {
+      "name": "Update Project",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"in development\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/projects/:id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "projects", ":id"],
+          "variable": [
+            {"key": "id", "value": "replace-with-actual-id"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete Project",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/projects/:id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "projects", ":id"],
+          "variable": [
+            {"key": "id", "value": "replace-with-actual-id"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Statistics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/stats",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "stats"]
+        }
+      }
+    },
+    {
+      "name": "Upload from Google Sheets",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sheetUrl\": \"https://docs.google.com/spreadsheets/d/example/export?format=csv\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/upload-gsheet",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "upload-gsheet"]
+        }
+      }
+    }
+  ]
+}

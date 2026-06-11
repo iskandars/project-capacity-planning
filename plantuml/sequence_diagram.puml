@@ -1,0 +1,46 @@
+# plantuml/sequence-diagram.puml
+@startuml
+title Sequence Diagram - Upload from Google Sheets
+
+actor User as user
+participant "Frontend\n(React)" as frontend
+participant "Backend\n(Express)" as backend
+participant "Redis" as redis
+participant "Google Sheets\nAPI/CSV URL" as gsheet
+
+user -> frontend: Click "Import from Sheet"
+activate frontend
+frontend -> frontend: Show modal form
+user -> frontend: Enter sheet URL and submit
+frontend -> backend: POST /api/upload-gsheet\n{sheetUrl: "csv_url"}
+activate backend
+
+backend -> gsheet: HTTP GET request to CSV URL
+activate gsheet
+gsheet --> backend: CSV data
+deactivate gsheet
+
+backend -> backend: Parse CSV using csv-parser
+backend -> backend: Transform to project objects
+
+backend -> redis: GET projects (for reference)
+redis --> backend: existing projects
+
+backend -> redis: SET projects (overwrite with new data)
+redis --> backend: OK
+
+backend --> frontend: {message: "Data imported", count: n}
+deactivate backend
+
+frontend -> frontend: Refresh project list
+frontend -> backend: GET /api/projects
+activate backend
+backend -> redis: GET projects
+redis --> backend: projects data
+backend --> frontend: projects[]
+deactivate backend
+
+frontend --> user: Display updated table and charts
+deactivate frontend
+
+@enduml
